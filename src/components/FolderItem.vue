@@ -3,6 +3,7 @@ import { FolderItem as FolderItemType } from '@/types/folder.item'
 import { useMainStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import UiSvg from '@/components/ui/UiSvg.vue'
 
 const props = withDefaults(defineProps<{
 	item?: FolderItemType | null
@@ -30,8 +31,15 @@ const saveName = (): void => {
 	<div class="folder-item">
 		<div class="folder-item__content">
 			<div class="folder-item__block">
-				<span>{{ props.item.folder ? '&#128193;' : '&#128196;' }}</span>
-				<span v-if="!isEditing" @click="isEditing = true">
+				<ui-svg
+					:name="props.item.folder ? 'folder' : 'file'"
+					class="folder-item__block-icon folder-item__block-icon--static"
+				/>
+				<span
+					v-if="!isEditing"
+					class="folder-item__block-name"
+					@click="isEditing = true"
+				>
 					{{ props.item.name }}
 				</span>
 				<input
@@ -45,18 +53,16 @@ const saveName = (): void => {
 				>
 			</div>
 			<div class="folder-item__block">
-				<span
-					class="folder-item__block-action"
+				<ui-svg
+					name="edit"
+					class="folder-item__block-icon"
 					@click="isEditing = !isEditing"
-				>
-					&#128393;
-				</span>
-				<span
-					class="folder-item__block-action"
+				/>
+				<ui-svg
+					name="trash"
+					class="folder-item__block-icon"
 					@click="mainStore.deleteItem(tree, props.item.id)"
-				>
-					&#128465;
-				</span>
+				/>
 			</div>
 		</div>
 		<folder-item
@@ -86,16 +92,22 @@ const saveName = (): void => {
 		align-items: center;
 		gap: 5px;
 
+		&-name {
+			cursor: pointer;
+		}
+
 		&-input {
 			font-size: 18px;
 		}
 
-		&-action {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+		&-icon {
 			cursor: pointer;
-			min-width: 25px;
+			width: 27px;
+			height: 27px;
+
+			&--static {
+				cursor: auto;
+			}
 		}
 	}
 }

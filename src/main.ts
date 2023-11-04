@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import './assets/_base.scss'
+import 'virtual:svg-icons-register'
 import App from './App.vue'
 
 const pinia = createPinia()
